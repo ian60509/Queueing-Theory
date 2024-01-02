@@ -62,7 +62,9 @@ def plot_cdf(x_values, cdf_simulated, cdf_theoretical, title):
     plt.step(x_values, cdf_theoretical, label='Theoretical', linestyle='dashed')
     plt.xlabel('Time')
     plt.ylabel('CDF')
-    plt.title(title)
+    plt.yticks(np.linspace(0,1,11))
+    plt.ylim(0,1.1)
+    plt.title(title+f'  lambda={arrival_rate}, mu={service_rate}')
     plt.legend()
     plt.show()
 def tranform_to_cdf(distribution):
@@ -71,9 +73,9 @@ def tranform_to_cdf(distribution):
         cdf[i] = np.sum(distribution <= distribution[i]) / num_packets
     return cdf
 # Simulation parameters
-arrival_rate = 8  # λ
+arrival_rate = 2  # λ
 service_rate = 10  # μ
-num_packets = 10000
+num_packets = 1000
 
 
 

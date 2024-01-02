@@ -16,8 +16,6 @@ def theoretical_waiting_cdf(arrival_rate, service_rate_1, service_rate_2, waitin
     B_Laplace = p1 * (mu1 / (s + mu1)) + p2 * (mu2 / (s + mu2))
     W_Laplace = (1 - rho) / (s - Lambda + Lambda * B_Laplace)
     w_y = inverse_laplace_transform(W_Laplace, s, t)
-    
-        # self.WaitingTime_theo[i] = integrate(w_y, t, 0, wt)
 
     waiting_time_theo_cdf = np.zeros(num_packets)
     for i, y in enumerate(waiting_times):
@@ -87,7 +85,9 @@ def plot_cdf(x_values, cdf_simulated, cdf_theoretical, title):
     plt.step(x_values, cdf_theoretical, label='Theoretical', linestyle='dashed')
     plt.xlabel('Time')
     plt.ylabel('CDF')
-    plt.title(title)
+    plt.yticks(np.linspace(0,1,11))
+    plt.ylim(0,1.1)
+    plt.title(title+f'  lambda={arrival_rate}, p1={case_1_ratio}')
     plt.legend()
     plt.show()
 def tranform_to_cdf(distribution):
@@ -97,13 +97,13 @@ def tranform_to_cdf(distribution):
     return cdf
     
 # Simulation parameters
-num_packets = 3000
+num_packets = 100
 mu = 10  # λ
 Lambda = 10  # μ
 arrival_rate = Lambda
 service_rate_1 = mu 
 service_rate_2 = 2 * mu
-case_1_ratio = 0.5
+case_1_ratio = 0.25
 
 
 # Simulation
@@ -121,6 +121,8 @@ plot_cdf(waiting_times, waiting_time_sim_cdf, waiting_time_theo_cdf, 'Waiting Ti
 plot_cdf(system_times, system_time_sim_cdf, system_time_theo_cdf, 'System Time CDF')
 
 # Calculate and print MSEs
+print(f'waiting time simulaiton={waiting_time_sim_cdf}')
+print(f'waiting time theo={waiting_time_theo_cdf}')
 waiting_time_mse = calculate_mse(waiting_time_sim_cdf, waiting_time_theo_cdf)
 system_time_mse = calculate_mse(system_time_sim_cdf, system_time_theo_cdf)
 
